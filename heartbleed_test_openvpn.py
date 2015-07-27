@@ -363,6 +363,8 @@ def parse_args(args):
     parser.add_argument('-H', '--hexdump-length', type=int,
         default=0x40, metavar='N',
         help='length of hexdump to show (default: %(default)s)')
+    parser.add_argument('--is-alive', action='store_true', default=False,
+        help='only check if opposite side is alive')
     parser.add_argument('--verb', type=int, default=1, metavar='N',
         help='output verbosity (default: %(default)s)')
     args = parser.parse_args(args)
@@ -399,6 +401,10 @@ def main(args=None):
             print('cannot connect to %s, port %d: %s' % \
                     (args.remote[0], args.remote[1], e), file=sys.stderr)
             return 1
+    if args.is_alive:
+        if args.verb >= 1:
+            print('is alive')
+        return 0
 
     example_payload = b'Heartbleed example payload'
     hb_len_sent = args.payload_length
